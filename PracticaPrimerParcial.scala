@@ -60,42 +60,46 @@ object PracticaPrimerParcial {
     }
 
     //Ejercicio 9
-def segundoMayorDigito(num: Int, acum: Int = -1): Int = {
+def segundoMayorDigito(num: Int): Int = {
     @tailrec
-  def max(n: Int, p: Int, s: Int): Int = {
-    if n == 0 then s
-    else {
-      val d = n % 10
-      if d > p then max(n / 10, d, p)
-      else if d < p && d > s then max(n / 10, p, d)
-      else max(n / 10, p, s)
-    }
-  }
+    def aux(n: Int, mayor: Int, segundo: Int): Int = {
+        if n == 0 then segundo
+        else {
+            val dig = n % 10
 
-  if num < 10 then acum
-  else max(num, -1, -1)
+            if dig > mayor then
+                aux(n / 10, dig, mayor)
+            else if dig < mayor && dig > segundo then
+                aux(n / 10, mayor, dig)
+            else
+                aux(n / 10, mayor, segundo)
+        }
+    }
+
+    aux(num, -1, -1)
 }
 
     //Ejercicio 10
-    def rachaMaxima(p: String, acum: Int = 0): Int = {
-        @tailrec
-        def aux(a: String, dact: Int = 1, dmax: Int = 1): Int = {
-            if a.length <= 1 then 
+def rachaMaxima(p: String): Int = {
+    @tailrec
+    def aux(a: String, dact: Int = 1, dmax: Int = 1): Int = {
+        if a.length <= 1 then
             if dact > dmax then dact else dmax
-            else {
+        else {
             val v1 = a.head
-            val v2 = a(1) 
-            
-            if v1 == v2 then {
+            val v2 = a(1)
+
+            if v1 == v2 then
                 aux(a.tail, dact + 1, dmax)
-            } else {
+            else {
                 val nuevoMax = if dact > dmax then dact else dmax
                 aux(a.tail, 1, nuevoMax)
             }
-            }
         }
-        if p.isEmpty then acum
-        else aux(p)
+    }
+
+    if p.isEmpty then 0
+    else aux(p)
 }
 
     def main (args: Array[String]):Unit = {
